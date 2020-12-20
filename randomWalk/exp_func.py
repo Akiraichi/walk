@@ -28,7 +28,7 @@ def quantum_walk_1d(exp_code, T, P, Q, PSY, plots_t, plot_graph_num_by_axis_row,
             PSY[t + 1, x] = P @ PSY[t, x + 1] + Q @ PSY[t, x - 1]
 
     """plotパート"""
-    fig = plt.figure(tight_layout=True)
+    fig = plt.figure(figsize=(16,12),tight_layout=True)
     for i, plot_t in enumerate(plots_t):
         ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, xlabel="x", ylabel="p")
         # 横軸（距離）の設定。

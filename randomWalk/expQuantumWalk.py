@@ -12,12 +12,12 @@ if True:
     # 最大時間発展T(t=0〜t=T-1まで時間発展させる)
     T = 100
     # P,Q
-    P = np.array([[0, 1], [0, 0]], dtype=np.complex128)
-    Q = np.array([[0, 0], [1, 0]], dtype=np.complex128)
+    P = np.array([[1/np.sqrt(2), 1/np.sqrt(2)], [0, 0]], dtype=np.complex128)
+    Q = np.array([[0, 0], [1/np.sqrt(2), -1/np.sqrt(2)]], dtype=np.complex128)
     # 初期確率振幅ベクトル[時間×距離(-T〜T)×2次元ベクトル]
     PSY = np.zeros([T, 2 * T, 2], dtype=np.complex128)
-    PSY[0, 0] = np.array([1/np.sqrt(2), 1j/np.sqrt(2)])
-    # PSY[0, 0] = np.array([0, 1])
+    # PSY[0, 0] = np.array([1/np.sqrt(2), 1j/np.sqrt(2)])
+    PSY[0, 0] = np.array([1, 0])
 
     """プロット設定"""
     # plotしたい時間t。リストで指定。複数指定の場合の例：plots_t = [0, 1, 2, 3]
