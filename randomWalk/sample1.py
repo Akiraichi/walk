@@ -284,7 +284,7 @@ if __name__ == '__main__':
         折れ線グラフ
     """
 
-    if False:
+    if True:
         plot_graph_num_by_axis = 2
         T = 1000
         p = 0.8
