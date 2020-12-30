@@ -4,6 +4,7 @@ import seaborn as sns
 import os
 import sympy
 
+
 def save_setting(exp_code, exp_code_chapter, description):
     """実験結果保存設定"""
     # ファイル保存フォルダ名
@@ -43,11 +44,12 @@ def do_plot(folder_name, fig_title_name, file_name, plots_t, plot_graph_num_by_a
 
 
 def do_plot_PSY_list(folder_name, fig_title_name, file_name, plot_t, plot_graph_num_by_axis_row,
-                     plot_graph_num_by_axis_col, graph_type, PSY_list, theta_list,label=r"$\theta$"):
+                     plot_graph_num_by_axis_col, graph_type, PSY_list, theta_list, label=r"$\theta$"):
     fig = plt.figure(figsize=(16, 12), tight_layout=True, dpi=800)
     fig.suptitle(fig_title_name)
     for index, theta in enumerate(theta_list):
-        ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, index + 1, xlabel="$x$", ylabel="$p$")
+        ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, index + 1, xlabel="$x$",
+                             ylabel="$p$")
         # 横軸（距離）の設定。固定値のみ
         x_axis = np.arange(-plot_t, plot_t + 1, 1, int)
         y_axis = np.zeros(len(x_axis))
@@ -196,4 +198,33 @@ def quantum_walk_1d_depend_x_omega_change(T, P_0_list, Q_0_list, P_x, Q_x, PSY_i
                     PSY[t + 1, x] = P_x @ PSY[t, x + 1] + Q_x @ PSY[t, x - 1]
         PSY_list.append(PSY)
 
+    return PSY_list
+
+
+def quantum_walk_1d_3component(T, P, Q, R, PSY_init):
+    # 初期確率振幅ベクトル
+    PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 3], dtype=np.complex128)
+    PSY[0, 0] = PSY_init
+
+    # 時間発展パート
+    for t in range(T):
+        for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
+            PSY[t + 1, x] = P @ PSY[t, x + 1] + Q @ PSY[t, x] + R @ PSY[t, x - 1]
+    return PSY
+
+
+def quantum_walk_1d_3component_theta_change(T, P_list, Q_list, R_list, PSY_init):
+    PSY_list = []
+    for i in range(len(P_list)):
+        # 初期確率振幅ベクトル
+        PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 3], dtype=np.complex128)
+        PSY[0, 0] = PSY_init
+        # 時間発展パート
+        P = P_list[i]
+        Q = Q_list[i]
+        R = R_list[i]
+        for t in range(T):
+            for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
+                PSY[t + 1, x] = P @ PSY[t, x + 1] + Q @ PSY[t, x] + R @ PSY[t, x - 1]
+        PSY_list.append(PSY)
     return PSY_list
