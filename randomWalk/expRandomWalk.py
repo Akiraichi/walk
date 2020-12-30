@@ -1,5 +1,5 @@
 import numpy as np
-from randomWalk import exp_func
+import exp_func
 
 if True:
     """実験パラメータ"""

@@ -1,13 +1,9 @@
-import random
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import math
-import os
+
+
 # グラデーション作成用
-import matplotlib.cm as cm
-from randomWalk import exp_func
 
 
 def random_walk(p):
