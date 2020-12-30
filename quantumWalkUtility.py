@@ -175,3 +175,25 @@ def quantum_walk_1d_depend_x(T, P_0, Q_0, P_x, Q_x, PSY_init):
             else:
                 PSY[t + 1, x] = P_x @ PSY[t, x + 1] + Q_x @ PSY[t, x - 1]
     return PSY
+
+
+def quantum_walk_1d_depend_x_omega_change(T, P_0_list, Q_0_list, P_x, Q_x, PSY_init):
+    PSY_list = []
+    for i in range(len(P_0_list)):
+        # 初期確率振幅ベクトル
+        PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 2], dtype=np.complex128)
+        PSY[0, 0] = PSY_init
+        # 時間発展パート
+        P_0 = P_0_list[i]
+        Q_0 = Q_0_list[i]
+        for t in range(T):
+            for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
+                if x == 1:
+                    PSY[t + 1, x] = P_x @ PSY[t, x + 1] + Q_0 @ PSY[t, x - 1]
+                elif x == -1:
+                    PSY[t + 1, x] = P_0 @ PSY[t, x + 1] + Q_x @ PSY[t, x - 1]
+                else:
+                    PSY[t + 1, x] = P_x @ PSY[t, x + 1] + Q_x @ PSY[t, x - 1]
+        PSY_list.append(PSY)
+
+    return PSY_list
