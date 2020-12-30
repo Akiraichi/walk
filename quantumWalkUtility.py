@@ -23,7 +23,7 @@ def do_plot(folder_name, fig_title_name, file_name, plots_t, plot_graph_num_by_a
     fig = plt.figure(figsize=(16, 12), tight_layout=True)
     fig.suptitle(fig_title_name)
     for i, plot_t in enumerate(plots_t):
-        ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, xlabel="x", ylabel="p")
+        ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, xlabel="$x$", ylabel="$p$")
         # 横軸（距離）の設定。
         if is_solid_axis_x:
             x_axis = np.arange(-plots_t[-1], plots_t[-1] + 1, 1, int)
@@ -35,7 +35,7 @@ def do_plot(folder_name, fig_title_name, file_name, plots_t, plot_graph_num_by_a
             # L2ノルム（いわゆる距離と同じ）をとる。そして2乗
             y_axis[k] = np.linalg.norm(PSY[plot_t, x], ord=2) ** 2
         if graph_type == "棒グラフ":
-            ax.bar(x_axis, y_axis, label=f"t={plot_t}")
+            ax.bar(x_axis, y_axis, label=f"$t={plot_t}$")
         plt.legend()
 
     plt.savefig(f"{folder_name}/{file_name}", dpi=800, bbox_inches='tight')
@@ -43,11 +43,11 @@ def do_plot(folder_name, fig_title_name, file_name, plots_t, plot_graph_num_by_a
 
 
 def do_plot_PSY_list(folder_name, fig_title_name, file_name, plot_t, plot_graph_num_by_axis_row,
-                     plot_graph_num_by_axis_col, graph_type, PSY_list, theta_list):
+                     plot_graph_num_by_axis_col, graph_type, PSY_list, theta_list,label="$\theta$"):
     fig = plt.figure(figsize=(16, 12), tight_layout=True, dpi=800)
     fig.suptitle(fig_title_name)
     for index, theta in enumerate(theta_list):
-        ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, index + 1, xlabel="x", ylabel="p")
+        ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, index + 1, xlabel="$x$", ylabel="$p$")
         # 横軸（距離）の設定。固定値のみ
         x_axis = np.arange(-plot_t, plot_t + 1, 1, int)
         y_axis = np.zeros(len(x_axis))
@@ -55,7 +55,7 @@ def do_plot_PSY_list(folder_name, fig_title_name, file_name, plot_t, plot_graph_
             # L2ノルム（いわゆる距離と同じ）をとる。そして2乗
             y_axis[k] = np.linalg.norm(PSY_list[index][plot_t, x], ord=2) ** 2
         if graph_type == "棒グラフ":
-            ax.bar(x_axis, y_axis, label=f"theta={theta}")
+            ax.bar(x_axis, y_axis, label=f"{label}={theta}")
         plt.legend()
 
     plt.savefig(f"{folder_name}/{file_name}", dpi=800, bbox_inches='tight')
