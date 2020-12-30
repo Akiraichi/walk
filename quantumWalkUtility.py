@@ -38,13 +38,13 @@ def do_plot(folder_name, fig_title_name, file_name, plots_t, plot_graph_num_by_a
             ax.bar(x_axis, y_axis, label=f"t={plot_t}")
         plt.legend()
 
-    plt.savefig(f"{folder_name}/{file_name}", dpi=400, bbox_inches='tight')
+    plt.savefig(f"{folder_name}/{file_name}", dpi=800, bbox_inches='tight')
     plt.show()
 
 
 def do_plot_PSY_list(folder_name, fig_title_name, file_name, plot_t, plot_graph_num_by_axis_row,
                      plot_graph_num_by_axis_col, graph_type, PSY_list, theta_list):
-    fig = plt.figure(figsize=(16, 12), tight_layout=True, dpi=400)
+    fig = plt.figure(figsize=(16, 12), tight_layout=True, dpi=800)
     fig.suptitle(fig_title_name)
     for index, theta in enumerate(theta_list):
         ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, index + 1, xlabel="x", ylabel="p")
@@ -58,7 +58,7 @@ def do_plot_PSY_list(folder_name, fig_title_name, file_name, plot_t, plot_graph_
             ax.bar(x_axis, y_axis, label=f"theta={theta}")
         plt.legend()
 
-    plt.savefig(f"{folder_name}/{file_name}", dpi=400, bbox_inches='tight')
+    plt.savefig(f"{folder_name}/{file_name}", dpi=800, bbox_inches='tight')
     plt.show()
 
 
@@ -157,3 +157,21 @@ def quantum_walk_1d_3phase_theta_change(T, P_list, Q_list, P_3, Q_3, PSY, PSY_in
         PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 2], dtype=np.complex128)
         PSY[0, 0] = PSY_init
     return PSY_list
+
+
+# 以下から初期確率振幅ベクトルを内包している関数となっている
+def quantum_walk_1d_depend_x(T, P_0, Q_0, P_x, Q_x, PSY_init):
+    # 初期確率振幅ベクトル
+    PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 2], dtype=np.complex128)
+    PSY[0, 0] = PSY_init
+
+    # 時間発展パート
+    for t in range(T):
+        for x in range(-T, T + 1):
+            if x == 1:
+                PSY[t + 1, x] = P_x @ PSY[t, x + 1] + Q_0 @ PSY[t, x - 1]
+            elif x == -1:
+                PSY[t + 1, x] = P_0 @ PSY[t, x + 1] + Q_x @ PSY[t, x - 1]
+            else:
+                PSY[t + 1, x] = P_x @ PSY[t, x + 1] + Q_x @ PSY[t, x - 1]
+    return PSY
