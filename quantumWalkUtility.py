@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import os
-
+import sympy
 
 def save_setting(exp_code, exp_code_chapter, description):
     """実験結果保存設定"""
@@ -43,7 +43,7 @@ def do_plot(folder_name, fig_title_name, file_name, plots_t, plot_graph_num_by_a
 
 
 def do_plot_PSY_list(folder_name, fig_title_name, file_name, plot_t, plot_graph_num_by_axis_row,
-                     plot_graph_num_by_axis_col, graph_type, PSY_list, theta_list,label="$\theta$"):
+                     plot_graph_num_by_axis_col, graph_type, PSY_list, theta_list,label=r"$\theta$"):
     fig = plt.figure(figsize=(16, 12), tight_layout=True, dpi=800)
     fig.suptitle(fig_title_name)
     for index, theta in enumerate(theta_list):
@@ -55,7 +55,7 @@ def do_plot_PSY_list(folder_name, fig_title_name, file_name, plot_t, plot_graph_
             # L2ノルム（いわゆる距離と同じ）をとる。そして2乗
             y_axis[k] = np.linalg.norm(PSY_list[index][plot_t, x], ord=2) ** 2
         if graph_type == "棒グラフ":
-            ax.bar(x_axis, y_axis, label=f"{label}={theta}")
+            ax.bar(x_axis, y_axis, label=f"{label}$={theta}$")
         plt.legend()
 
     plt.savefig(f"{folder_name}/{file_name}", dpi=800, bbox_inches='tight')
