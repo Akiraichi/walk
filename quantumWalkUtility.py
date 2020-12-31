@@ -21,7 +21,7 @@ def save_setting(exp_code, exp_code_chapter, description):
 
 def do_plot(folder_name, fig_title_name, file_name, plots_t, plot_graph_num_by_axis_row,
             plot_graph_num_by_axis_col, is_solid_axis_x, graph_type, PSY):
-    fig = plt.figure(figsize=(16, 12), tight_layout=True)
+    fig = plt.figure(figsize=(16, 12), tight_layout=True, dpi=800)
     fig.suptitle(fig_title_name)
     for i, plot_t in enumerate(plots_t):
         ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, xlabel="$x$", ylabel="$p$")
