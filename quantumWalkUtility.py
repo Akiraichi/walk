@@ -75,9 +75,7 @@ def quantum_walk_1d(T, P, Q, PSY):
 def quantum_walk_1d_theta_change(T, P_list, Q_list, PSY, PSY_init, theta_list):
     # 時間発展パート
     PSY_list = []
-    for i in range(len(theta_list)):
-        P = P_list[i]
-        Q = Q_list[i]
+    for P, Q in zip(P_list, Q_list):
         for t in range(T):
             for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
                 PSY[t + 1, x] = P @ PSY[t, x + 1] + Q @ PSY[t, x - 1]
@@ -102,9 +100,7 @@ def quantum_walk_1d_2phase(T, P_list, Q_list, PSY):
 def quantum_walk_1d_2phase_theta_2_change(T, P_list, Q_list, P_1, Q_1, PSY, PSY_init, theta_list):
     # 時間発展パート
     PSY_list = []
-    for i in range(len(theta_list)):
-        P = P_list[i]
-        Q = Q_list[i]
+    for P, Q in zip(P_list, Q_list):
         for t in range(T):
             for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
                 if t % 2 == 0:
@@ -138,9 +134,7 @@ def quantum_walk_1d_3phase(T, P_list, Q_list, PSY):
 def quantum_walk_1d_3phase_theta_change(T, P_list, Q_list, P_3, Q_3, PSY, PSY_init, theta_list):
     # 時間発展パート
     PSY_list = []
-    for i in range(len(theta_list)):
-        P_1 = P_list[i]
-        Q_1 = Q_list[i]
+    for P_1, Q_1 in zip(P_list, Q_list):
         P_2 = P_1
         Q_2 = Q_1
         for t in range(T):
@@ -181,13 +175,11 @@ def quantum_walk_1d_depend_x(T, P_0, Q_0, P_x, Q_x, PSY_init):
 
 def quantum_walk_1d_depend_x_omega_change(T, P_0_list, Q_0_list, P_x, Q_x, PSY_init):
     PSY_list = []
-    for i in range(len(P_0_list)):
+    for P_0, Q_0 in zip(P_0_list, Q_0_list):
         # 初期確率振幅ベクトル
         PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 2], dtype=np.complex128)
         PSY[0, 0] = PSY_init
         # 時間発展パート
-        P_0 = P_0_list[i]
-        Q_0 = Q_0_list[i]
         for t in range(T):
             for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
                 if x == 1:
@@ -215,16 +207,39 @@ def quantum_walk_1d_3component(T, P, Q, R, PSY_init):
 
 def quantum_walk_1d_3component_theta_change(T, P_list, Q_list, R_list, PSY_init):
     PSY_list = []
-    for i in range(len(P_list)):
+    for P, Q, R in zip(P_list, Q_list, R_list):
         # 初期確率振幅ベクトル
         PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 3], dtype=np.complex128)
         PSY[0, 0] = PSY_init
         # 時間発展パート
-        P = P_list[i]
-        Q = Q_list[i]
-        R = R_list[i]
         for t in range(T):
             for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
                 PSY[t + 1, x] = P @ PSY[t, x + 1] + Q @ PSY[t, x] + R @ PSY[t, x - 1]
+        PSY_list.append(PSY)
+    return PSY_list
+
+
+def quantum_walk_1d_4component(T, P, Q, PSY_init):
+    # 初期確率振幅ベクトル
+    PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 4], dtype=np.complex128)
+    PSY[0, 0] = PSY_init
+
+    # 時間発展パート
+    for t in range(T):
+        for x in range(-T, T + 1):
+            PSY[t + 1, x] = P @ PSY[t, x + 1] + Q @ PSY[t, x - 1]
+    return PSY
+
+
+def quantum_walk_1d_4component_theta_change(T, P_list, Q_list, PSY_init):
+    PSY_list = []
+    for P, Q in zip(P_list, Q_list):
+        # 初期確率振幅ベクトル
+        PSY = np.zeros([T + 1, 2 * (T + 1) + 1, 4], dtype=np.complex128)
+        PSY[0, 0] = PSY_init
+        # 時間発展パート
+        for t in range(T):
+            for x in range(-T, T + 1):  # T=2とすると、-2,-1,0,1,2 で、領域の確保数が2(T+1)+1なので、リストのインデックスは5,6,0,1,2となる
+                PSY[t + 1, x] = P @ PSY[t, x + 1] + Q @ PSY[t, x - 1]
         PSY_list.append(PSY)
     return PSY_list
