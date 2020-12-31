@@ -3,6 +3,7 @@ import numpy as np
 import seaborn as sns
 import os
 import sympy
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def save_setting(exp_code, exp_code_chapter, description):
@@ -259,27 +260,84 @@ def quantum_walk_2d(T, P, Q, R, S, PSY_init):
     return PSY
 
 
-def do_plot_3d(PSY, plots_t, plot_graph_num_by_axis_row, plot_graph_num_by_axis_col):
-    # setup the figure and axes
-    fig = plt.figure(figsize=(16, 9), dpi=800)
-    # ax1 = fig.add_subplot(121, projection='3d')
+# def do_plot_3d(PSY, plots_t, plot_graph_num_by_axis_row, plot_graph_num_by_axis_col):
+#     # setup the figure and axes
+#     fig = plt.figure(figsize=(16, 9), dpi=800)
+#     # ax1 = fig.add_subplot(121, projection='3d')
+#
+#     for i, plot_t in enumerate(plots_t):
+#         ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, projection="3d")
+#         # 軸の設定。
+#         x_axis = np.arange(-plot_t, plot_t + 1, 1, int)
+#         y_axis = np.arange(-plot_t, plot_t + 1, 1, int)
+#         _xx, _yy = np.meshgrid(x_axis, y_axis)
+#         _x, _y = _xx.ravel(), _yy.ravel()
+#
+#         z_axis = np.zeros(len(_x))
+#         count = 0
+#         for y in y_axis:
+#             for x in x_axis:
+#                 # L2ノルム（いわゆる距離と同じ）をとる。そして2乗
+#                 z_axis[count] = np.linalg.norm(PSY[plot_t, x, y], ord=2) ** 2
+#                 count += 1
+#         bottom = np.zeros_like(z_axis)
+#         width = depth = 1
+#         ax.bar3d(_x, _y, bottom, width, depth, z_axis, shade=True)
+#         # plt.legend()
+#
+#     plt.show()
 
-    for i, plot_t in enumerate(plots_t):
-        ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, projection="3d")
-        # 軸の設定。
-        x_axis = np.arange(-plot_t, plot_t + 1, 1, int)
-        y_axis = np.arange(-plot_t, plot_t + 1, 1, int)
-        _xx, _yy = np.meshgrid(x_axis, y_axis)
-        x, y = _xx.ravel(), _yy.ravel()
+# def do_plot_3d(PSY, plots_t, plot_graph_num_by_axis_row, plot_graph_num_by_axis_col):
+#     # setup the figure and axes
+#     fig = plt.figure(figsize=(16, 9), dpi=800)
+#
+#     for i, plot_t in enumerate(plots_t):
+#         ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, projection="3d")
+#         # 軸の設定。
+#         x_axis = np.arange(-plot_t, plot_t + 1, 1, int)
+#         y_axis = np.arange(-plot_t, plot_t + 1, 1, int)
+#
+#         x_list = np.zeros(len(x_axis) * len(y_axis))
+#         y_list = np.zeros(len(x_axis) * len(y_axis))
+#         z_list = np.zeros(len(x_axis) * len(y_axis))
+#
+#         count = 0
+#         for y in y_axis:
+#             for x in x_axis:
+#                 # L2ノルム（いわゆる距離と同じ）をとる。そして2乗
+#                 z_list[count] = np.linalg.norm(PSY[plot_t, x, y], ord=2) ** 2
+#                 x_list[count] = x
+#                 y_list[count] = y
+#                 count += 1
+#
+#         bottom = np.zeros_like(z_list)
+#         width = depth = 1
+#         ax.bar3d(x_list, y_list, bottom, width, depth, z_list, shade=True)
+#         # plt.legend()
 
-        z_axis = np.zeros((len(x_axis), len(y_axis)))
-        for x in x_axis:
-            for y in y_axis:
-                # L2ノルム（いわゆる距離と同じ）をとる。そして2乗
-                z_axis[x, y] = np.linalg.norm(PSY[plot_t, x, y], ord=2) ** 2
-        bottom = np.zeros_like(z_axis.ravel())
-        width = depth = 1
-        ax.bar3d(x, y, bottom, width, depth, z_axis.ravel(), shade=True)
-        # plt.legend()
-
-    plt.show()
+#     plt.show()
+#
+# def do_plot_3d(PSY, plots_t, plot_graph_num_by_axis_row, plot_graph_num_by_axis_col):
+#     # setup the figure and axes
+#     fig = plt.figure(figsize=(16, 9), dpi=800)
+#
+#     for i, plot_t in enumerate(plots_t):
+#         ax = fig.add_subplot(plot_graph_num_by_axis_row, plot_graph_num_by_axis_col, i + 1, projection="3d")
+#         # 軸の設定。
+#         x_axis = np.arange(-plot_t, plot_t + 1, 1, int)
+#         y_axis = np.arange(-plot_t, plot_t + 1, 1, int)
+#
+#         X, Y = np.meshgrid(x_axis, y_axis)
+#
+#         Z = np.zeros(len(x_axis) * len(y_axis))
+#         count = 0
+#         for y in y_axis:
+#             for x in x_axis:
+#                 # L2ノルム（いわゆる距離と同じ）をとる。そして2乗
+#                 Z[count] = np.linalg.norm(PSY[plot_t, x, y], ord=2) ** 2
+#                 count += 1
+#
+#         ax.plot_surface(X, Y, Z.reshape(X.shape), cmap='bwr', linewidth=0)
+#         # plt.legend()
+#
+#     plt.show()
